@@ -2,7 +2,7 @@
 
 # Create the S3 Bucket for Web Hosting
 resource "aws_s3_bucket" "website_bucket" {
-  bucket = "my-devops-project-2-store" 
+  bucket = "my-devops-project-store" 
   tags = {
     Environment = "Production"
     Project     = "Static-Web-Automation"
