@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "my-terraform-state-unique-id"
+    key            = "prod/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+  }
+}
+
+
 # 1. Create the S3 Bucket
 resource "aws_s3_bucket" "website_bucket" {
   bucket = "my-devops-project-store" 
@@ -21,7 +31,7 @@ resource "aws_s3_bucket_website_configuration" "site_config" {
   }
 }
 
-# 3. Disable "Block Public Access" settings (The Guardrails)
+# 3. Disable "Block Public Access" settings
 resource "aws_s3_bucket_public_access_block" "public" {
   bucket = aws_s3_bucket.website_bucket.id
 
@@ -31,7 +41,7 @@ resource "aws_s3_bucket_public_access_block" "public" {
   restrict_public_buckets = false
 }
 
-# 4. Apply the Bucket Policy (The actual permission)
+# 4. Apply the Bucket Policy
 resource "aws_s3_bucket_policy" "allow_public_access" {
   bucket = aws_s3_bucket.website_bucket.id
 
@@ -56,11 +66,17 @@ resource "aws_s3_bucket_policy" "allow_public_access" {
 resource "aws_s3_object" "index" {
   bucket       = aws_s3_bucket.website_bucket.id
   key          = "index.html"
-  source       = "index.html" # Make sure this file exists in your local folder
+  source       = "index.html" 
   content_type = "text/html"
 }
 
 # 6. Output the Website URL so you can find it easily
 output "website_url" {
   value = aws_s3_bucket_website_configuration.site_config.website_endpoint
+}
+
+
+import {
+  to = aws_s3_bucket.website_bucket
+  id = "my-devops-project-store"
 }
