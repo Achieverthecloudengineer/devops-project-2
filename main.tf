@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "my-terraform-state-unique-id"
+    bucket         = "my-terraform-state-store"
     key            = "prod/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
@@ -10,7 +10,7 @@ terraform {
 
 # 1. Create the S3 Bucket
 resource "aws_s3_bucket" "website_bucket" {
-  bucket = "my-devops-project-store" 
+  bucket = "my-new-devops-project-store" 
 
   tags = {
     Environment = "Production"
