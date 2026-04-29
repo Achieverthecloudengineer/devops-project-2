@@ -27,4 +27,4 @@ jobs:
 
       - name: Deploy Assets to S3
         run: |
-          aws s3 sync . s3://my-devops-portfolio-unique-id --exclude "*" --include "index.html"
+          aws s3 sync . s3://my-devops-project-2-store --exclude "*" --include "index.html"
